@@ -71,17 +71,17 @@ impl Board {
     }
 
     pub fn get_row_values(&self, loc: &CellLoc) -> HashSet<u8> {
-        let start = loc.row/loc.board_width;
-        self.cells[start..start+9].iter().flat_map(|e| e.clone()).collect()
+        let start = loc.row * loc.board_width;
+        self.cells[start..start+loc.board_width].iter().flat_map(|e| e.clone()).collect()
     }
 
     pub fn get_box_values(&self, loc: &CellLoc) -> HashSet<u8> {
         let mut set = HashSet::new();
-        let c = loc.col / 3;
-        let r = loc.row / 3;
-        for x in c..c+3 {
-            for y in r..r+3 {
-                if let Some(value) = self.cells[y * loc.base_size + x]{
+        let c = loc.col / loc.base_size * loc.base_size;
+        let r = loc.row / loc.base_size * loc.base_size;
+        for x in c..c+loc.base_size {
+            for y in r..r+loc.base_size {
+                if let Some(value) = self.get_at(x,y){
                     set.insert(value);
                 }
             }

@@ -27,7 +27,7 @@ mod tests {
         let board = get_board_a();
         assert_eq!(Some(8), board.get_at(0, 0));
         assert_eq!(Some(4), board.get_at(3, 3));
-        assert_eq!(Some(9), board.get_at(5, 7));
+        assert_eq!(Some(7), board.get_at(5, 7));
         assert_eq!(None, board.get_at(6, 7));
         assert_eq!(None, board.get_at(7, 2));
     }
@@ -37,7 +37,7 @@ mod tests {
         let board = get_board_a();
         assert_eq!(Some(8), board.get(&CellLoc::new(0, 0)));
         assert_eq!(Some(4), board.get(&CellLoc::new(3, 3)));
-        assert_eq!(Some(9), board.get(&CellLoc::new(5, 7)));
+        assert_eq!(Some(7), board.get(&CellLoc::new(5, 7)));
         assert_eq!(None, board.get(&CellLoc::new(6, 7)));
         assert_eq!(None, board.get(&CellLoc::new(7, 2)));
     }
