@@ -21,35 +21,41 @@ impl CellLoc {
         }
     }
 }
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Cell {
+    value: Option<u8>,
+    is_variable: bool,
+}
 
-#[derive(Debug, PartialEq, Eq)]
+impl Cell {
+    pub fn new(value: Option<u8>, is_variable: bool) -> Self {
+        Self {
+            value, is_variable
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Board {
-    cells: Vec<Option<u8>>,
+    cells: Vec<Cell>,
     base_size: u8, // size of each 3x3 grid
 }
 
 impl Board {
-    pub fn new() -> Self {
-        Self {
-            cells: vec![None; 81],
-            base_size: 3,
-        }
-    }
-
     pub fn get(&self, loc: &CellLoc) -> Option<u8> {
-        self.cells[loc.idx]
+        self.cells[loc.idx].value
     }
 
     pub fn get_at(&self, c: usize, r: usize) -> Option<u8> {
-        self.cells[CellLoc::new(c, r).idx]
+        self.cells[CellLoc::new(c, r).idx].value
     }
 
-    pub fn set(&mut self, loc: &CellLoc, value: u8) -> Option<u8> {
-        self.cells[loc.idx].replace(value)
+    pub fn set(&mut self, loc: &CellLoc, v: u8) -> Option<u8> {
+        self.cells[loc.idx].value.replace(v)
     }
 
-    pub fn set_at(&mut self, c: usize, r: usize, value: u8) -> Option<u8> {
-        self.cells[CellLoc::new(c, r).idx].replace(value)
+    pub fn set_at(&mut self, c: usize, r: usize, v: u8) -> Option<u8> {
+        self.cells[CellLoc::new(c, r).idx].value.replace(v)
     }
 
     pub fn get_possible_moves(&self, loc: &CellLoc) -> HashSet<u8> {
@@ -67,12 +73,12 @@ impl Board {
     }
 
     pub fn get_col_values(&self, loc: &CellLoc) -> HashSet<u8> {
-        (loc.col..self.cells.len()).step_by(loc.board_width).flat_map(|i| self.cells[i]).collect()
+        (loc.col..self.cells.len()).step_by(loc.board_width).flat_map(|i| self.cells[i].value).collect()
     }
 
     pub fn get_row_values(&self, loc: &CellLoc) -> HashSet<u8> {
         let start = loc.row * loc.board_width;
-        self.cells[start..start+loc.board_width].iter().flat_map(|e| e.clone()).collect()
+        self.cells[start..start+loc.board_width].iter().flat_map(|e| e.value.clone()).collect()
     }
 
     pub fn get_box_values(&self, loc: &CellLoc) -> HashSet<u8> {
@@ -100,8 +106,8 @@ impl FromStr for Board {
         let cells = s
             .chars()
             .map(|c| match c {
-                '1'..='9' => c.to_digit(10).map(|x| x as u8),
-                _ => None,
+                '1'..='9' => Cell::new(c.to_digit(10).map(|x| x as u8), false),
+                _ => Cell::new(None, true),
             })
             .collect();
 
