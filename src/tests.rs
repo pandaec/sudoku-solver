@@ -1,6 +1,9 @@
 #[cfg(test)]
 mod tests {
-    use std::{collections::HashSet, str::FromStr};
+    use std::{
+        collections::{BTreeSet, HashSet},
+        str::FromStr,
+    };
 
     use sudoku_solver::board::{Board, CellLoc};
 
@@ -46,19 +49,19 @@ mod tests {
     fn get_row_values() {
         let board = get_board_a();
         assert_eq!(
-            HashSet::from([5, 1, 9, 6]),
+            BTreeSet::from([5, 1, 9, 6]),
             board.get_row_values(&CellLoc::new(2, 2))
         );
         assert_eq!(
-            HashSet::from([6, 9, 2, 1, 8, 3]),
+            BTreeSet::from([6, 9, 2, 1, 8, 3]),
             board.get_row_values(&CellLoc::new(4, 4))
         );
         assert_eq!(
-            HashSet::from([2, 4, 8, 3, 5, 9, 1]),
+            BTreeSet::from([2, 4, 8, 3, 5, 9, 1]),
             board.get_row_values(&CellLoc::new(6, 6))
         );
         assert_eq!(
-            HashSet::from_iter(1..=9),
+            BTreeSet::from_iter(1..=9),
             board.get_row_values(&CellLoc::new(8, 8))
         );
     }
@@ -67,19 +70,19 @@ mod tests {
     fn get_col_values() {
         let board = get_board_a();
         assert_eq!(
-            HashSet::from_iter(1..=9),
+            BTreeSet::from_iter(1..=9),
             board.get_col_values(&CellLoc::new(2, 2))
         );
         assert_eq!(
-            HashSet::from_iter(1..=9),
+            BTreeSet::from_iter(1..=9),
             board.get_col_values(&CellLoc::new(4, 4))
         );
         assert_eq!(
-            HashSet::from([1,9]),
+            BTreeSet::from([1, 9]),
             board.get_col_values(&CellLoc::new(6, 6))
         );
         assert_eq!(
-            HashSet::from([4,9]),
+            BTreeSet::from([4, 9]),
             board.get_col_values(&CellLoc::new(8, 8))
         );
     }
@@ -88,19 +91,19 @@ mod tests {
     fn get_box_values() {
         let board = get_board_a();
         assert_eq!(
-            HashSet::from([8,4,9,7,6,5,1]),
+            BTreeSet::from([8, 4, 9, 7, 6, 5, 1]),
             board.get_box_values(&CellLoc::new(2, 2))
         );
         assert_eq!(
-            HashSet::from_iter(1..=9),
+            BTreeSet::from_iter(1..=9),
             board.get_box_values(&CellLoc::new(4, 4))
         );
         assert_eq!(
-            HashSet::from([2,3,4,5,6,7,9]),
-            board.get_box_values(&CellLoc::new(1,5))
+            BTreeSet::from([2, 3, 4, 5, 6, 7, 9]),
+            board.get_box_values(&CellLoc::new(1, 5))
         );
         assert_eq!(
-            HashSet::from([1,4,8,9]),
+            BTreeSet::from([1, 4, 8, 9]),
             board.get_box_values(&CellLoc::new(8, 8))
         );
     }
